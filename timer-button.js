@@ -9,23 +9,24 @@ var $timerButton =(function(){
         num;
     function show(conf){
         //1.DOM绘制
+        if(timer) clearInterval(timer);
+
         $(cfg.container).append($btn);
         $.extend(cfg,conf);
         num = cfg.num;
         $btn.val(cfg.title+'('+num+'s)');
         //2.enent bind
+        timer = setInterval(function(){
+            num--;
+            if(num === 0){
+                clearInterval(timer);
+                $btn.val('同意');
+                $btn.removeAttr('disabled');//去掉禁用属性
+            }else{
+                $btn.val(cfg.title+'('+num+'s)');
+            }
+        },1000);
     }
-
-    timer = setInterval(function(){
-        num--;
-        if(num === 0){
-            clearInterval(timer);
-            $btn.val('同意');
-            $btn.removeAttr('disabled');//去掉禁用属性
-        }else{
-            $btn.val(cfg.title+'('+num+'s)');
-        }
-    },1000);
 
     $btn.click(function(){
         cfg.onClick();
